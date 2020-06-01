@@ -24,6 +24,9 @@ Access token to play around with the APIs is here. It may be revoked in the futu
 
     EAAIXtjZBWts4BAPArQvcLZCcBJ8ArOnZC7vhe8WCAyr9Nqpcxqx30cdfMHf5EfSb33Kef7KbMjnNBs6IAafh1ZAU6ZB86jZALFqDEwVXi2KrmDk0CYUOdsZAdPZCxS6RtysJ9ZAZBmlPizITFNZCisulwim8S8LGzf4EfMt2tWKelEWjQZDZD
 
+The Facebook Ads account ID to play around with is
+
+    673430293116700
 ### Create new campaign
 
     POST /campaigns
