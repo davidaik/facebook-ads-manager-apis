@@ -34,6 +34,8 @@ POST /campaigns
 Headers:
   Authorization: Bearer [access_token]
 Query params:
+  ad_account_id: string
+    description: the facebook ad account id
   campaign_name: string
     description: name of the campaign
   objective: enum
@@ -42,22 +44,36 @@ Query params:
 
 router.post("/", (req, res) => {
   let authorization = req.headers.authorization;
-  
+
   if (!authorization || !authorization.trim()) {
     return res.status(403).send(getAccessTokenError());
   }
 
   var accessToken = authorization.substring("Bearer ".length);
+
+  var accountId = req.query.ad_account_id;
   var campaignName = req.query.campaign_name;
   var objective = req.query.objective;
 
+  var accountId = req.query.ad_account_id;
 
-  if (!campaignName || !campaignName.trim() || !objective || !objective.trim()) {
+  if (!accountId) {
+    return res
+      .status(400)
+      .send(getErrorMessage(101012, "Ad account id must be specified"));
+  }
+
+  if (
+    !campaignName ||
+    !campaignName.trim() ||
+    !objective ||
+    !objective.trim()
+  ) {
     return res.status(400).send(getErrorMessage(101011, "Invalid data"));
   }
 
   return axios
-    .post("https://graph.facebook.com/v7.0/act_673430293116700/campaigns", {
+    .post("https://graph.facebook.com/v7.0/act_" + accountId + "/campaigns", {
       access_token: accessToken,
       special_ad_categories: "['none']",
       name: campaignName,
@@ -77,18 +93,29 @@ Get existing Facebook ad campaigns
 GET /campaigns
 Headers:
   Authorization: Bearer [access_token]
+Query params:
+  ad_account_id: string
+      description: the facebook ad account id
 */
 router.get("/", (req, res) => {
   let authorization = req.headers.authorization;
-  
+
   if (!authorization || !authorization.trim()) {
     return res.status(403).send(getAccessTokenError());
   }
 
   var accessToken = authorization.substring("Bearer ".length);
 
+  var accountId = req.query.ad_account_id;
+
+  if (!accountId) {
+    return res
+      .status(400)
+      .send(getErrorMessage(101012, "Ad account id must be specified"));
+  }
+
   return axios
-    .get("https://graph.facebook.com/v7.0/act_673430293116700/campaigns", {
+    .get("https://graph.facebook.com/v7.0/act_" + accountId + "/campaigns", {
       params: {
         access_token: accessToken,
         fields: "['name']"
@@ -116,7 +143,7 @@ Query params:
 */
 router.put("/:campaignId", (req, res) => {
   let authorization = req.headers.authorization;
-  
+
   if (!authorization || !authorization.trim()) {
     return res.status(403).send(getAccessTokenError());
   }
@@ -125,7 +152,6 @@ router.put("/:campaignId", (req, res) => {
 
   var campaignId = req.params.campaignId;
   var campaignName = req.query.campaign_name;
-
 
   if (!campaignName || !campaignName.trim()) {
     return res.status(400).send(getErrorMessage(101011, "Invalid data"));
@@ -153,7 +179,7 @@ Headers:
 */
 router.delete("/:campaignId", (req, res) => {
   let authorization = req.headers.authorization;
-  
+
   if (!authorization || !authorization.trim()) {
     return res.status(403).send(getAccessTokenError());
   }

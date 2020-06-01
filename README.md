@@ -30,6 +30,8 @@ Access token to play around with the APIs is here. It may be revoked in the futu
     Headers:
       Authorization: Bearer [access_token]
     Query params:
+      ad_account_id: string
+        description: the facebook ad account id
       campaign_name: string
         description: name of the campaign
       objective: enum
@@ -40,6 +42,9 @@ Access token to play around with the APIs is here. It may be revoked in the futu
     GET /campaigns
     Headers:
       Authorization: Bearer [access_token]
+    Query params:
+      ad_account_id: string
+        description: the facebook ad account id
 
 ### Update existing campaign
 
